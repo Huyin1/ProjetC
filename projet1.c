@@ -3,6 +3,7 @@
 #include<string.h>
 #include<time.h>
 #include<errno.h>
+#include <assert.h>
 
 
 typedef struct produit
@@ -77,6 +78,9 @@ int main(void)
 
   //Afficher_Produits_EnStock(&list1);
   liste_produit list2;
+  
+  //Save_Produites_EnStock(&list1);
+  //Afficher_Produits_EnStock(&list1);
   Charger_Produites_EnStock(&list2);
   Afficher_Produits_EnStock(&list2);
 
@@ -88,64 +92,66 @@ int main(void)
 
 
   int end0 = 0;
+  
+  
   while(!end0)
   {
-    switch(Menu_())
-    {
-      case 1:
-              int end1=0;
-              while(!end1)
-              {
-                 switch(Menu_Caissier())
-                 {
-                   case 1:
-                          break;
-                   case 2:
-                          printf("\n");
-                          printf("you choose exit the mode_caissier\n");
-                          end1=1;
-                          break;
-                 }
-              }
-
-              break;
-      case 2:
-              int end2=0;
-              while(!end2)
-              {
-                  switch(Menu_Gerant())
+    switch(Menu_()){
+        case 1 : {
+            int end1 = 0;
+                while(!end1)
+                {
+                  switch(Menu_Caissier())
                   {
-                   case 1:
-                          Afficher_Produits_EnStock(&list2);
-                          break;
-                   case 2:
-                          Modifier_Produites_EnStock(&list2);
-                          break;
-                   case 3:
-                          Add_Produites_EnStock(&list2);
-                          break;
-                   case 4:
-                          break;
-                   case 5:
-                          end2 = 1;
-                          printf("\n");
-                          printf("you choose exit the mode_gerant\n");
-                          break;
+                    case 1:
+                        break;
+                    case 2:
+                        printf("\n");
+                        printf("you choose exit the mode_caissier\n");
+                        end1=1;
+                        break;
                   }
+                }
+        }
+                break;
+        case 2 :{
+            int end2=0;
+            while(!end2)
+            {
+                switch(Menu_Gerant())
+                {
+                    case 1:
+                        Afficher_Produits_EnStock(&list2);
+                        break;
+                    case 2:
+                        Modifier_Produites_EnStock(&list2);
+                        break;
+                    case 3:
+                        Add_Produites_EnStock(&list2);
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        end2 = 1;
+                        printf("\n");
+                        printf("you choose exit the mode_gerant\n");
+                        break;
+                }
               }
               break;
-      case 3:
-               printf("\n");
-               printf("********************************************************************************");
-               printf("\n");
-               printf("*******************************    AU REVOIR    ********************************");
-               printf("\n");
-               printf("*****************************    À LA PROCHAIN    ******************************");
-               printf("\n");
-               printf("********************************************************************************");
-               printf("\n");
-               end0 = 1;
-               break;
+        }
+        case 3:
+                printf("\n");
+                printf("********************************************************************************");
+                printf("\n");
+                printf("*******************************    AU REVOIR    ********************************");
+                printf("\n");
+                printf("*****************************    À LA PROCHAIN    ******************************");
+                printf("\n");
+                printf("********************************************************************************");
+                printf("\n");
+                end0 = 1;
+                break;
     }
   }
   Save_Produites_EnStock(&list2);
@@ -171,20 +177,27 @@ int Menu_(void)
   printf("\n");
   printf("-----  Choisissez : (1)Caissier ou (2)Gerant ou (3)Quitter le programme   ------");
   printf("\n");
-  char choice[50];
-  int get_choice;
-  fgets(choice,50,stdin);
-  get_choice=atoi(choice);
-  switch(get_choice)
+  //char choice[50];
+  //int get_choice;
+  //fgets(choice,50,stdin);
+  //get_choice=atoi(choice);
+  int choice;
+  scanf("%d",&choice);
+  if (choice !=1 && choice !=2 && choice !=3 ){
+    printf("mal entre\n");
+    fflush(stdin);
+    return 0;
+  }
+  switch(choice)
   {
     case 1:
-          printf("Vous Avez Choisi %d , Pour Entrer La Mode Caissier!\n");
+          printf("Vous Avez Choisi %d , Pour Entrer La Mode Caissier!\n",choice);
           break;
     case 2:
-          printf("Vous Avez Choisi %d , Pour Entrer La Mode Gerant!\n");
+          printf("Vous Avez Choisi %d , Pour Entrer La Mode Gerant!\n",choice);
           break;
   }
-  return get_choice;
+  return choice;
 }
 
 
@@ -206,10 +219,27 @@ int Menu_Caissier(void)
   printf("\n");
   printf("(1) Pour Demarrer Un Nouveau Ticket\n");
   printf("(2) Pour Revenir Au Menu Principal\n");
-  char choice[50];
-  int get_choice;
-  fgets(choice,50,stdin);
-  get_choice=atoi(choice);
+  //char choice[50];
+  //int get_choice;
+  //fgets(choice,50,stdin);
+  //get_choice=atoi(choice);
+  int choice;
+  scanf("%d",&choice);
+  if (choice !=1 && choice !=2 ){
+    printf("mal entre\n");
+    fflush(stdin);
+    return 0;
+  }
+  switch(choice)
+  {
+    case 1:
+          printf("Vous Avez Choisi %d , Pour Demarrer Un Nouveau Ticket\n",choice);
+          break;
+    case 2:
+          printf("Vous Avez Choisi %d , Pour Revenir Au Menu Principal\n",choice);
+          break;
+  }
+  return choice;
 }
 
 
@@ -256,7 +286,7 @@ void Charger_Produites_EnStock(liste_produit *liste_produit1)
   fseek(f,0,SEEK_END);
   long Lsize=ftell(f);
   printf("the size of whole fichier is %ld\n",Lsize);
-  printf("the size of whole fichier is %d\n",sizeof(produit));
+  printf("the size of whole fichier is %lu\n",sizeof(produit));
   rewind(f);
   int nombre=Lsize/sizeof(produit);
   printf("the number of whole fichier is %d\n",nombre);
@@ -277,14 +307,14 @@ void Charger_Produites_EnStock(liste_produit *liste_produit1)
 void Save_Produites_EnStock(const liste_produit *liste_produit1)
 {
    FILE *f=fopen("stocks.bin","wb");
-   if(f == NULL)
-   {
-     perror("Open Failed!\n");
-     exit(1);
-   }
-   fwrite(liste_produit1->p_liste_produit,sizeof(produit),liste_produit1->n,f);
-   rewind(f);
-   fclose(f);
+    if(f == NULL)
+    {
+      perror("Open Failed!\n");
+      exit(1);
+    }
+    fwrite(liste_produit1->p_liste_produit,sizeof(produit),liste_produit1->n,f);
+    rewind(f);
+    fclose(f);
 }
 
 
@@ -331,7 +361,7 @@ void Modifier_Produites_EnStock(liste_produit *liste_produit1)
       strcpy(liste_produit1->p_liste_produit[get_choice].nom,new_name);
       printf("Donner Le Nouveau Prix De Produit: ");
       double new_prix;
-      scanf(" %f",&new_prix);
+      scanf(" %lf",&new_prix);
       liste_produit1->p_liste_produit[get_choice].prix_unit=new_prix;
       printf("Donner Le Nouveau Stocks :");
       int new_stocks;
@@ -347,27 +377,27 @@ void Modifier_Produites_EnStock(liste_produit *liste_produit1)
 
 void Add_Produites_EnStock(liste_produit *liste_produit1)
 {
-   (liste_produit1->n)=(liste_produit1->n)+1;
+    (liste_produit1->n)=(liste_produit1->n)+1;
    produit *temp=(produit *)realloc(liste_produit1->p_liste_produit,sizeof(produit)*((liste_produit1->n)));
-   if(temp==NULL)
-   {
-     printf("%s\n",strerror(errno));
-   }
-   liste_produit1->p_liste_produit=temp;
-   char new_name[64];
-   double new_prix=0;
-   int new_stocks;
-   printf("\n");
-   printf("Maintenant Vous Modifier Le %d(id):-------------\n",liste_produit1->n);
-   printf("Nommez Le Produit SVP:\n");
-   scanf("%s",new_name);
-   strcpy(liste_produit1->p_liste_produit[(liste_produit1->n)-1].nom,new_name);
-   printf("Donner Le Nouveau Prix De Produit: ");
-   scanf("%f",&new_prix);
-   liste_produit1->p_liste_produit[(liste_produit1->n)-1].prix_unit=new_prix;
-   printf("Donner Le Nouveau Stocks :");
-   scanf("%d",&new_stocks);
-   printf("%d\n",new_stocks);
-   liste_produit1->p_liste_produit[(liste_produit1->n)-1].stocks=new_stocks;
-   printf("%d\n",liste_produit1->p_liste_produit[(liste_produit1->n)-1].stocks);
-}
+    if(temp==NULL)
+    {
+      printf("%s\n",strerror(errno));
+    }
+    liste_produit1->p_liste_produit=temp;
+    char new_name[64];
+    double new_prix=0;
+    int new_stocks;
+    printf("\n");
+    printf("Maintenant Vous Modifier Le %d(id):-------------\n",liste_produit1->n);
+    printf("Nommez Le Produit SVP:\n");
+    scanf("%s",new_name);
+    strcpy(liste_produit1->p_liste_produit[(liste_produit1->n)-1].nom,new_name);
+    printf("Donner Le Nouveau Prix De Produit: ");
+    scanf("%lf",&new_prix);
+    liste_produit1->p_liste_produit[(liste_produit1->n)-1].prix_unit=new_prix;
+    printf("Donner Le Nouveau Stocks :");
+    scanf("%d",&new_stocks);
+    printf("%d\n",new_stocks);
+    liste_produit1->p_liste_produit[(liste_produit1->n)-1].stocks=new_stocks;
+    printf("%d\n",liste_produit1->p_liste_produit[(liste_produit1->n)-1].stocks);
+  }
