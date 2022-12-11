@@ -97,24 +97,26 @@ int main(void)
   while(!end0)
   {
     switch(Menu_()){
-        case 1 : {
+      case 1 : {
             int end1 = 0;
-                while(!end1)
+            while(!end1)
                 {
                   switch(Menu_Caissier())
                   {
                     case 1:
                         break;
-                    case 2:
+                    case 2:{
                         printf("\n");
                         printf("you choose exit the mode_caissier\n");
                         end1=1;
                         break;
+                    }
                   }
                 }
-        }
-                break;
-        case 2 :{
+        break;
+      }
+                
+      case 2 :{
             int end2=0;
             while(!end2)
             {
@@ -131,14 +133,15 @@ int main(void)
                         break;
                     case 4:
                         break;
-                    case 5:
+                    case 5:{
                         end2 = 1;
                         printf("\n");
                         printf("you choose exit the mode_gerant\n");
                         break;
+                    }
                 }
               }
-              break;
+          break;
         }
         case 3:
                 printf("\n");
@@ -181,7 +184,7 @@ int Menu_(void)
   //int get_choice;
   //fgets(choice,50,stdin);
   //get_choice=atoi(choice);
-  int choice;
+  int choice=0;
   scanf("%d",&choice);
   if (choice !=1 && choice !=2 && choice !=3 ){
     printf("mal entre\n");
@@ -223,11 +226,11 @@ int Menu_Caissier(void)
   //int get_choice;
   //fgets(choice,50,stdin);
   //get_choice=atoi(choice);
-  int choice;
+  int choice=0;
   scanf("%d",&choice);
   if (choice !=1 && choice !=2 ){
     printf("mal entre\n");
-    fflush(stdin);
+    //fflush(stdin);
     return 0;
   }
   switch(choice)
@@ -264,11 +267,37 @@ int Menu_Gerant(void)
   printf("(3) Ajouter nouveau produite catalogue\n");
   printf("(4) Afficher la compte\n");
   printf("(5) Quitter le mode Gerant\n");
-  char choice[50];
-  int get_choice;
-  fgets(choice,50,stdin);
-  get_choice=atoi(choice);
-  return get_choice;
+  //char choice[50];
+  //int get_choice;
+  //fgets(choice,50,stdin);
+  //get_choice=atoi(choice);
+  //return get_choice;
+  int choice;
+  scanf("%d",&choice);
+  if (choice !=1 && choice !=2 && choice !=3 && choice !=4 && choice !=5){
+    printf("mal entre\n");
+    fflush(stdin);
+    return 0;
+  }
+  switch(choice)
+  {
+    case 1:
+          printf("Vous Avez Choisi %d , Voir la liste des produits en stocks\n",choice);
+          break;
+    case 2:
+          printf("Vous Avez Choisi %d , Pour Modifier un produit\n",choice);
+          break;
+    case 3:
+          printf("Vous Avez Choisi %d , Pour Ajouter nouveau produite catalogue\n",choice);
+          break;
+    case 4:
+          printf("Vous Avez Choisi %d , Pour Afficher la compte\n",choice);
+          break;
+    case 5:
+          printf("Vous Avez Choisi %d , Pour Quitter le mode Gerant\n",choice);
+          break;
+  }
+  return choice;
 }
 
 
@@ -338,8 +367,10 @@ void Modifier_Produites_EnStock(liste_produit *liste_produit1)
 {
     printf("\n");
     printf("Saisissez l'id du produit :\n");
-    int get_choice;
+    int get_choice=-1;
+    
     scanf("%d",&get_choice);
+    //fflush(stdin);
     if( get_choice<0 || get_choice>(liste_produit1->n-1))
     {
       printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    ERREUR SAISIE    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
@@ -355,20 +386,33 @@ void Modifier_Produites_EnStock(liste_produit *liste_produit1)
       printf("id%5d%25s  Prix Unit :%20f  Stocks :%5d",get_choice,liste_produit1->p_liste_produit[get_choice].nom,liste_produit1->p_liste_produit[get_choice].prix_unit,liste_produit1->p_liste_produit[get_choice].stocks);
       printf("\n");
       printf("Renommez le produit :");
-      char new_name[64];
-      gets(new_name);
-      //scanf("%s",new_name);
+      char new_name[512];
+      //gets(new_name);
+      scanf("%s",new_name);
+      //fflush(stdin);
       strcpy(liste_produit1->p_liste_produit[get_choice].nom,new_name);
       printf("Donner Le Nouveau Prix De Produit: ");
-      double new_prix;
+      double new_prix=-1.0;
       scanf(" %lf",&new_prix);
-      liste_produit1->p_liste_produit[get_choice].prix_unit=new_prix;
+      if (new_prix==-1.0){
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    ERREUR SAISIE    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      }
+      //fflush(stdin);
+      else{
+        liste_produit1->p_liste_produit[get_choice].prix_unit=new_prix;
       printf("Donner Le Nouveau Stocks :");
-      int new_stocks;
+      int new_stocks=-1;
       scanf("%d",&new_stocks);
-      liste_produit1->p_liste_produit[get_choice].stocks=new_stocks;
-      printf("\n");
-      printf("SUCCED-----------------------------------------!\n");
+        if (new_stocks==-1){
+          printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    ERREUR SAISIE    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+        }
+      //fflush(stdin);
+        else{
+          liste_produit1->p_liste_produit[get_choice].stocks=new_stocks;
+          printf("\n");
+          printf("SUCCED-----------------------------------------!\n");
+      }
+      }
     }
 }
 
@@ -391,12 +435,15 @@ void Add_Produites_EnStock(liste_produit *liste_produit1)
     printf("Maintenant Vous Modifier Le %d(id):-------------\n",liste_produit1->n);
     printf("Nommez Le Produit SVP:\n");
     scanf("%s",new_name);
+    fflush(stdin);
     strcpy(liste_produit1->p_liste_produit[(liste_produit1->n)-1].nom,new_name);
     printf("Donner Le Nouveau Prix De Produit: ");
     scanf("%lf",&new_prix);
+    fflush(stdin);
     liste_produit1->p_liste_produit[(liste_produit1->n)-1].prix_unit=new_prix;
     printf("Donner Le Nouveau Stocks :");
     scanf("%d",&new_stocks);
+    fflush(stdin);
     printf("%d\n",new_stocks);
     liste_produit1->p_liste_produit[(liste_produit1->n)-1].stocks=new_stocks;
     printf("%d\n",liste_produit1->p_liste_produit[(liste_produit1->n)-1].stocks);
