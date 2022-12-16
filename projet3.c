@@ -64,7 +64,6 @@ void Add_Millieu_Panier(panier *p_panier);
 void Delet_Panier(panier *p_panier);
 
 
-
 int main(void)
 {
   
