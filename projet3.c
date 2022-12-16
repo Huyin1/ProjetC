@@ -65,11 +65,6 @@ void Delet_Panier(panier *p_panier);
 
 
 
-
-
-
-
-
 int main(void)
 {
   
